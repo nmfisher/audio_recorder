@@ -9,15 +9,21 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
     var mPath = ""
     var startTime: Date!
     var audioRecorder: AVAudioRecorder!
+    var channel: FlutterMethodChannel
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "audio_recorder", binaryMessenger: registrar.messenger())
     let instance = SwiftAudioRecorderPlugin()
+    instance.channel = channel
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
+        case "initialize":
+            channel.invokeMethod("initialized", null);
+            result(nil)
+            break;
         case "start":
             print("start")
             let dic = call.arguments as! [String : Any]

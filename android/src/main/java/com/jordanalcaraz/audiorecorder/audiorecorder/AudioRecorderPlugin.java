@@ -30,12 +30,15 @@ public class AudioRecorderPlugin implements MethodCallHandler {
   private Date startTime = null;
   private String mExtension = "";
   private WavRecorder wavRecorder;
+  private MethodChannel channel;
   /**
    * Plugin registration.
    */
   public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "audio_recorder");
-    channel.setMethodCallHandler(new AudioRecorderPlugin(registrar));
+    AudioRecorderPlugin instance = new AudioRecorderPlugin(registrar);
+
+    instance.channel = new MethodChannel(registrar.messenger(), "audio_recorder");
+    instance.channel.setMethodCallHandler(instance);
   }
 
   private AudioRecorderPlugin(Registrar registrar){
@@ -45,6 +48,10 @@ public class AudioRecorderPlugin implements MethodCallHandler {
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     switch (call.method) {
+      case "initialize":
+        channel.invokeMethod("initialized", null);
+        result.success(null);
+        break;
       case "start":
         Log.d(LOG_TAG, "Start");
         String path = call.argument("path");
