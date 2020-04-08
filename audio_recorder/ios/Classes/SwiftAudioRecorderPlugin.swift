@@ -61,6 +61,10 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
             result(nil)
         case "stop":
             print("stop")
+            if(audioRecorder == nil) {
+                result(nil)
+                return
+            }
             audioRecorder.stop()
             audioRecorder = nil
             let duration = Int(Date().timeIntervalSince(startTime as Date) * 1000)
