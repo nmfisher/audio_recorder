@@ -66,7 +66,6 @@ class AudioRecorderWebPlugin  {
         _recorder.stop(export);
         return "stopped";
       case 'initialize':
-      print("initializingf recorder");
         _recorder.initialize();
         break;
       case 'hasPermissions':

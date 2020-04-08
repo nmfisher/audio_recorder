@@ -1,22 +1,31 @@
 name: audio_recorder
 description: A Flutter plugin to record audio.
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/ZaraclaJ/audio_recorder
 
 dependencies:
   path: ^1.5.1
+  file: ^5.0.4
+  permission_handler: ^5.0.0+hotfix.3
   flutter:
     sdk: flutter
-  file: ^5.0.4
-
+  flutter_web_plugins:
+    sdk: flutter
 
 environment:
   sdk: ">=2.0.0-dev.40.0.flutter-f981f09760 <3.0.0"
 
 flutter:
   plugin:
-    androidPackage: com.jordanalcaraz.audiorecorder.audiorecorder
-    pluginClass: AudioRecorderPlugin
+    platforms:
+      android:
+        package: com.jordanalcaraz.audiorecorder.audiorecorder
+        pluginClass: AudioRecorderPlugin
+      ios:
+        pluginClass: AudioRecorderPlugin
+      web:
+        pluginClass: AudioRecorderWebPlugin
+        fileName: audio_recorder_web.dart
 
 dev_dependencies:
   flutter_test:
