@@ -3,13 +3,13 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///mnt/storage/downloads/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-2.0.0",
+      "rootUri": "file:///mnt/storage/downloads/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.2"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///mnt/storage/downloads/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.39.5",
+      "rootUri": "file:///mnt/storage/downloads/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.39.6",
       "packageUri": "lib/",
       "languageVersion": "2.6"
     },
@@ -422,13 +422,13 @@
       "languageVersion": "2.0"
     },
     {
-      "name": "audio_recorder",
+      "name": "audio_recorder_platform_interface",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     }
   ],
-  "generated": "2020-04-07T14:08:28.290774Z",
+  "generated": "2020-04-08T09:38:10.822709Z",
   "generator": "pub",
-  "generatorVersion": "2.8.0-dev.18.0.flutter-eea9717938"
+  "generatorVersion": "2.8.0-dev.20.0.flutter-1210d27678"
 }
