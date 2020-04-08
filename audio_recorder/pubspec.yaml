@@ -9,16 +9,15 @@ dependencies:
   flutter:
     sdk: flutter
   audio_recorder_platform_interface:
-    #git:
-    #  url: git://github.com/nmfisher/audio_recorder.git
-    #  path: audio_recorder_platform_interface
-    path: ../audio_recorder_platform_interface
+    git:
+      url: git://github.com/nmfisher/audio_recorder.git
+      path: audio_recorder_platform_interface
+    #path: ../audio_recorder_platform_interface
   audio_recorder_web:
-    #git:
-    #  url: git://github.com/nmfisher/audio_recorder.git
-      
-    #  path: audio_recorder_web
-    path: ../audio_recorder_web
+    git:
+      url: git://github.com/nmfisher/audio_recorder.git
+      path: audio_recorder_web
+    #path: ../audio_recorder_web
 
 environment:
   sdk: ">=2.0.0-dev.40.0.flutter-f981f09760 <3.0.0"
