@@ -10,10 +10,10 @@ dependencies:
     sdk: flutter
   js: ^0.6.0
   audio_recorder_platform_interface:
-    #git:
-    #  url: git://github.com/nmfisher/audio_recorder.git
-    #  path: audio_recorder_platform_interface
-    path: ../audio_recorder_platform_interface
+    git:
+      url: git://github.com/nmfisher/audio_recorder.git
+      path: audio_recorder_platform_interface
+    #path: ../audio_recorder_platform_interface
   meta: ^1.0.5
 
 
