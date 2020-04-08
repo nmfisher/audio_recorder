@@ -10,18 +10,23 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
     var startTime: Date!
     var audioRecorder: AVAudioRecorder!
     var channel: FlutterMethodChannel
+  
+	
+  init(channel: FlutterMethodChannel) {
+    self.channel = channel
+	// perform some initialization here
+  }
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "audio_recorder", binaryMessenger: registrar.messenger())
-    let instance = SwiftAudioRecorderPlugin()
-    instance.channel = channel
+    let instance = SwiftAudioRecorderPlugin(channel:channel)
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
         case "initialize":
-            channel.invokeMethod("initialized", null);
+            channel.invokeMethod("initialized", arguments:nil);
             result(nil)
             break;
         case "start":
@@ -42,7 +47,7 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
                 AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
             ]
             do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: AVAudioSessionCategoryOptions.defaultToSpeaker)
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
                 try AVAudioSession.sharedInstance().setActive(true)
 
                 audioRecorder = try AVAudioRecorder(url: URL(string: mPath)!, settings: settings)
@@ -70,7 +75,7 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
             result(isRecording)
         case "hasPermissions":
             print("hasPermissions")
-            switch AVAudioSession.sharedInstance().recordPermission(){
+            switch AVAudioSession.sharedInstance().recordPermission {
             case AVAudioSession.RecordPermission.granted:
                 print("granted")
                 hasPermissions = true
