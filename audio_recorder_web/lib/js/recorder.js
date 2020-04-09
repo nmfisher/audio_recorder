@@ -76,7 +76,10 @@
 
         worker.onerror = function(err) {
           console.error(err);
-          onError(err.message);
+          if(err.message)
+            onError(err.message);
+          else 
+            onError("Unknown recorder worker error.");
         }
   
         worker.postMessage({

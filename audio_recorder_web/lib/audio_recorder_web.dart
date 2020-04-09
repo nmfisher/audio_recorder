@@ -34,6 +34,7 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
     }), allowInterop((event) {
 
     }), allowInterop((error) {
+      print("Interop error : $error");
       errorController.add(error.toString());
     }), allowInterop((data, done) {
       onRecordedDataAvailableController.add(data);
