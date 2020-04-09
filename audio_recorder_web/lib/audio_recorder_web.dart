@@ -27,7 +27,13 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
 
   int _sampleRate;
 
-  AudioRecorderWebPlugin([bool useAssetPrefix=false]) {
+  /// Registers this class as the default instance of [AudioPlayerPlatform].
+  static void registerWith(Registrar registrar) {
+    AudioRecorderPlatform.instance = AudioRecorderWebPlugin();
+  }
+
+  @override
+  void initialize([bool useAssetPrefix=false]) {
     _recorder = Recorder(allowInterop((sampleRate) {
       _sampleRate = sampleRate;
       initializedController.add(_sampleRate);
@@ -41,15 +47,7 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
       if(done)
         onRecordingSuccessfullyCompleteController.add(true);
     }), false, useAssetPrefix ? "assets/packages/audio_recorder_web/js/recorderWorker.js" : "packages/audio_recorder_web/js/recorderWorker.js");
-  }
 
-  /// Registers this class as the default instance of [AudioPlayerPlatform].
-  static void registerWith(Registrar registrar) {
-    AudioRecorderPlatform.instance = AudioRecorderWebPlugin();
-  }
-
-  @override
-  void initialize() {
     _recorder.initialize();
   }
 
