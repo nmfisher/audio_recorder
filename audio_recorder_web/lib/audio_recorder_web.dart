@@ -33,7 +33,7 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
   }
 
   @override
-  void initialize([bool useAssetPrefix=false]) {
+  void initialize() {
     _recorder = Recorder(allowInterop((sampleRate) {
       _sampleRate = sampleRate;
       initializedController.add(_sampleRate);
@@ -46,7 +46,7 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
       onRecordedDataAvailableController.add(data);
       if(done)
         onRecordingSuccessfullyCompleteController.add(true);
-    }), false, useAssetPrefix ? "assets/packages/audio_recorder_web/js/recorderWorker.js" : "packages/audio_recorder_web/js/recorderWorker.js");
+    }), false, "assets/packages/audio_recorder_web/js/recorderWorker.js");
 
     _recorder.initialize();
   }
