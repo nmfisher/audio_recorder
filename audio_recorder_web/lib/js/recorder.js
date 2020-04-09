@@ -3,10 +3,10 @@
   var WORKER_PATH = "packages/audio_recorder_web/js/recorderWorker.js";
   var BIT_DEPTH = 16;
 
-  var Recorder = function(onInit, onEvent, onError, callback, exportRecorded) {
+  var Recorder = function(onInit, onEvent, onError, callback, exportRecorded, workerPath) {
 
     var config = {
-      "workerPath":WORKER_PATH,
+      "workerPath":workerPath || WORKER_PATH,
       "callback": callback,
     };
     
@@ -70,52 +70,58 @@
       input.connect(node);
 
       node.connect(audioContext.destination);
-                  
-      worker = new Worker(config.workerPath || WORKER_PATH);
 
-      worker.onerror = function(err) {
-        console.error(err);
-        onError(err.message);
-      }
+      try {
+        worker = new Worker(config.workerPath);
 
-      worker.postMessage({
-        command: 'init',
-        config: {
-          sampleRate: input.context.sampleRate,
-          bitDepth: config.bitDepth || BIT_DEPTH
+        worker.onerror = function(err) {
+          console.error(err);
+          onError(err.message);
         }
-      });
-
-      var saveByteArray = (function () {
-          var a = document.createElement("a");
-          document.body.appendChild(a);
-          a.style = "display: none";
-          return function (data, name) {
-              var blob = new Blob(data, {type: "octet/stream"}),
-                  url = window.URL.createObjectURL(blob);
-              a.href = url;
-              a.download = name;
-              a.click();
-              window.URL.revokeObjectURL(url);
-          };
-      }());
-      
-      worker.onmessage = function(e) {
-        
-        var blob = e.data;
-        
-        var reader = new FileReader();
-        reader.addEventListener("loadend", function() {
-          callback(new Uint8Array(reader.result), true);
-          worker.postMessage({ command: 'clear' });
+  
+        worker.postMessage({
+          command: 'init',
+          config: {
+            sampleRate: input.context.sampleRate,
+            bitDepth: config.bitDepth || BIT_DEPTH
+          }
         });
-        reader.readAsArrayBuffer(blob);
-        if(exportRecorded)
-          saveByteArray([blob], 'example.txt');
-      }
-
-      if(onInit) {
-        onInit(input.context.sampleRate);
+  
+        var saveByteArray = (function () {
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            return function (data, name) {
+                var blob = new Blob(data, {type: "octet/stream"}),
+                    url = window.URL.createObjectURL(blob);
+                a.href = url;
+                a.download = name;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            };
+        }());
+        
+        worker.onmessage = function(e) {
+          
+          var blob = e.data;
+          
+          var reader = new FileReader();
+          reader.addEventListener("loadend", function() {
+            callback(new Uint8Array(reader.result), true);
+            worker.postMessage({ command: 'clear' });
+          });
+          reader.readAsArrayBuffer(blob);
+          if(exportRecorded)
+            saveByteArray([blob], 'example.txt');
+        }
+  
+        if(onInit) {
+          onInit(input.context.sampleRate);
+        }
+      } catch(err) {
+        console.error(err);
+        if(onError)
+          onError(err);
       }
     }
 

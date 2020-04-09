@@ -12,7 +12,7 @@ import 'package:audio_recorder_platform_interface/audio_recorder_platform_interf
 @JS()
 class Recorder {
   external Recorder(Function onInit, Function onEvent, Function onError,
-      Function callback, bool exportRecorded);
+      Function callback, bool exportRecorded, String workerPath);
   external void record();
   external void stop(bool export);
   external void clear();
@@ -27,7 +27,7 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
 
   int _sampleRate;
 
-  AudioRecorderWebPlugin() {
+  AudioRecorderWebPlugin([bool useAssetPrefix=false]) {
     _recorder = Recorder(allowInterop((sampleRate) {
       _sampleRate = sampleRate;
       initializedController.add(_sampleRate);
@@ -39,7 +39,7 @@ class AudioRecorderWebPlugin extends AudioRecorderPlatform  {
       onRecordedDataAvailableController.add(data);
       if(done)
         onRecordingSuccessfullyCompleteController.add(true);
-    }), false);
+    }), false, useAssetPrefix ? "assets/packages/audio_recorder_web/js/recorderWorker.js" : "packages/audio_recorder_web/js/recorderWorker.js");
   }
 
   /// Registers this class as the default instance of [AudioPlayerPlatform].
